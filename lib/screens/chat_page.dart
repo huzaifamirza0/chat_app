@@ -36,27 +36,37 @@ class _ChatPageState extends State<ChatPage> {
   void _addMessage(Map<String, dynamic> message) {
     setState(() {
       _messages.insert(0, message);
+      print(message);
     });
     _saveMessage(message);
   }
 
   void _saveMessage(Map<String, dynamic> message) async {
-    String lastMessageText = message['content'];
+    // Ensure 'content' exists and is a string
+    String lastMessageText = message['content'] is String
+        ? message['content']
+        : 'Poll'; // Or some default value or handle the error
 
-    await FirebaseFirestore.instance
-        .collection('chatRooms')
-        .doc(widget.chatRoomId)
-        .collection('messages')
-        .add(message);
+    try {
+      // Save the message to Firestore
+      await FirebaseFirestore.instance
+          .collection('chatRooms')
+          .doc(widget.chatRoomId)
+          .collection('messages')
+          .add(message);
 
-    // Update last message info in chat room
-    await FirebaseFirestore.instance
-        .collection('chatRooms')
-        .doc(widget.chatRoomId)
-        .update({
-      'lastMessage': lastMessageText,
-      'lastMessageTime': Timestamp.now(),
-    });
+      // Update last message info in chat room
+      await FirebaseFirestore.instance
+          .collection('chatRooms')
+          .doc(widget.chatRoomId)
+          .update({
+        'lastMessage': lastMessageText,
+        'lastMessageTime': Timestamp.now(),
+      });
+    } catch (e) {
+      print('Error saving message: $e');
+      // Handle error accordingly
+    }
   }
 
   void _handleSendPressed({String? imageUrl, String? fileUrl, String? fileName}) {
@@ -127,11 +137,16 @@ class _ChatPageState extends State<ChatPage> {
             TextButton(
               onPressed: () {
                 final poll = Poll(
-                  question: questionController.text,
-                  options: optionControllers.map((controller) => controller.text).toList(),
+                  question: questionController.text.isNotEmpty ? questionController.text : 'No Question', // Ensure not empty
+                  options: optionControllers.map((controller) => controller.text).where((text) => text.isNotEmpty).toList(), // Ensure not empty
                   votes: {},
                   userVotes: {},
                 );
+                print(poll.options);
+                print(poll.question);
+                print('Question: ${questionController.text}');
+                print('Options: ${optionControllers.map((controller) => controller.text).toList()}');
+
                 _handleSendPoll(poll);
                 Navigator.of(context).pop();
               },
@@ -143,7 +158,9 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+
   void _handleSendPoll(Poll poll) {
+    print('Poll Data: ${poll.toMap()}');
     final message = {
       'senderId': _auth.currentUser?.uid,
       'poll': poll.toMap(),

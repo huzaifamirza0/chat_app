@@ -269,7 +269,7 @@ class MessageWidget extends StatelessWidget {
         }
 
         // Increment the vote count for the selected option
-        poll.votes[selectedOption]!.add(optionIndex);
+        poll.votes[selectedOption]!.add(optionIndex); // Correctly adding to a List<int>
 
         // Update user vote
         poll.userVotes[userId] = optionIndex;

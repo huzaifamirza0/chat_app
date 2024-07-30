@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 class Poll {
   final String question;
   final List<String> options;
-  final Map<String, List<int>> votes; // User ID -> List of option indices
-  final Map<String, int> userVotes;   // User ID -> Option index
+  final Map<String, List<int>> votes; // Changed from Map<String, int> to Map<String, List<int>>
+  final Map<String, int> userVotes;
 
   Poll({
     required this.question,
@@ -18,10 +18,12 @@ class Poll {
 
   factory Poll.fromMap(Map<String, dynamic> map) {
     return Poll(
-      question: map['question'] as String,
-      options: List<String>.from(map['options']),
-      votes: Map<String, List<int>>.from(map['votes']),
-      userVotes: Map<String, int>.from(map['userVotes']),
+      question: map['question'] as String? ?? '',
+      options: List<String>.from(map['options'] ?? []),
+      votes: Map<String, List<int>>.from(
+        map['votes']?.map((k, v) => MapEntry(k, List<int>.from(v))) ?? {},
+      ),
+      userVotes: Map<String, int>.from(map['userVotes'] ?? {}),
     );
   }
 
@@ -29,11 +31,12 @@ class Poll {
     return {
       'question': question,
       'options': options,
-      'votes': votes,
+      'votes': votes.map((k, v) => MapEntry(k, v)),
       'userVotes': userVotes,
     };
   }
 }
+
 
 
 
