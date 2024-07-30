@@ -25,8 +25,6 @@ class DefaultFirebaseOptions {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
-      case TargetPlatform.iOS:
-        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -50,19 +48,11 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCpx5Ed006DURgrZvoLUm3C6uRbJrX_2GQ',
-    appId: '1:241527848888:android:b1fb675459ebbb4afbd94d',
-    messagingSenderId: '241527848888',
-    projectId: 'chatapp-ae060',
-    storageBucket: 'chatapp-ae060.appspot.com',
+    apiKey: 'AIzaSyA0lS4a8gkJVYBbPDj-4-MPmHRxZRq0F64',
+    appId: '1:189165886296:android:7d8db96e2b70ab0b51632d',
+    messagingSenderId: '189165886296',
+    projectId: 'chatapp-fe040',
+    storageBucket: 'chatapp-fe040.appspot.com',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCfJd_o7VAzVWZ7BXRwdnea_SQE3fOwF5w',
-    appId: '1:241527848888:ios:9b03586ba0122d42fbd94d',
-    messagingSenderId: '241527848888',
-    projectId: 'chatapp-ae060',
-    storageBucket: 'chatapp-ae060.appspot.com',
-    iosBundleId: 'com.example.chatApp',
-  );
 }

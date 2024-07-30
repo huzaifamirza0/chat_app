@@ -194,7 +194,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.send),
+            icon: const Icon(Icons.send, color: Colors.purple,),
             onPressed: () => _handleSendPressed(),
           ),
         ],
@@ -207,7 +207,7 @@ class _ChatPageState extends State<ChatPage> {
       context: context,
       builder: (BuildContext context) => SafeArea(
         child: SizedBox(
-          height: 144,
+          height: 230,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -229,6 +229,16 @@ class _ChatPageState extends State<ChatPage> {
                 child: const Align(
                   alignment: AlignmentDirectional.centerStart,
                   child: Text('File'),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _handleCreatePoll();
+                },
+                child: const Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text('Poll'),
                 ),
               ),
               TextButton(

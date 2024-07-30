@@ -35,11 +35,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  flutter_chat_ui: ^1.6.14
-  flutter_chat_types: ^3.6.2
-  file_picker: ^4.5.1
-  image_picker: ^0.8.4+7
-  open_filex: ^3.0.0
+  file_picker:
+  image_picker:
   path_provider: ^2.0.11
   uuid: ^3.0.6
   http: ^0.13.4
@@ -49,10 +46,12 @@ dependencies:
   cloud_firestore: ^4.15.8
   firebase_storage:
   get: ^4.6.6
-  flutter_polls: ^0.1.6
   chat_message_timestamp: ^0.0.1
-  open_file: ^3.2.1
-  permission_handler: ^11.3.1
+  open_file:
+  permission_handler:
+  url_launcher:
+  flutter_linkify:
+  photo_view:
 
 
 

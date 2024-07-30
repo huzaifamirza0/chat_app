@@ -77,7 +77,7 @@ class MessageWidget extends StatelessWidget {
           );
         }else if (map.containsKey('poll')) {
           Poll poll = Poll.fromMap(map['poll']);
-          String messageId = map['id'];
+          String messageId = map['id'] ?? 'Unkown id';
           bool hasVoted = poll.userVotes.containsKey(FirebaseAuth.instance.currentUser!.uid);
 
           return PollWidget(
@@ -93,8 +93,8 @@ class MessageWidget extends StatelessWidget {
             sendingStatusIcon: const Icon(Icons.check, color: Colors.black),
             text: content,
             sentAt: time,
-            style: const TextStyle(color: Colors.black, fontSize: 16),
-            sentAtStyle: const TextStyle(color: Colors.black, fontSize: 12),
+            style: const TextStyle(color: Colors.white, fontSize: 16),
+            sentAtStyle: const TextStyle(color: Colors.white, fontSize: 12),
             maxLines: 3,
             delimiter: '\u2026',
             viewMoreText: 'showMore',
@@ -122,8 +122,8 @@ class MessageWidget extends StatelessWidget {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: senderId == _auth.currentUser?.uid
-                        ? Colors.lightGreen[300]
-                        : Colors.grey[300],
+                        ? Colors.purple[300]
+                        : Colors.grey[200],
                     borderRadius: BorderRadius.only(
                       topLeft: const Radius.circular(12),
                       topRight: const Radius.circular(12),
@@ -140,7 +140,7 @@ class MessageWidget extends StatelessWidget {
                     children: [
                       Text(
                         senderName,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                       const SizedBox(height: 4),
                       messageWidget,
@@ -255,15 +255,26 @@ class MessageWidget extends StatelessWidget {
 
     if (messageSnapshot.exists) {
       Map<String, dynamic> data = messageSnapshot.data() as Map<String, dynamic>;
+
+      // Create a Poll instance from the data
       Poll poll = Poll.fromMap(data['poll']);
       String userId = _auth.currentUser!.uid;
 
       if (!poll.userVotes.containsKey(userId)) {
         String selectedOption = poll.options[optionIndex];
 
-        poll.votes[selectedOption] = (poll.votes[selectedOption] ?? 0) + 1;
-        poll.userVotes[userId] = selectedOption;
+        // Initialize the votes map if it does not exist
+        if (!poll.votes.containsKey(selectedOption)) {
+          poll.votes[selectedOption] = [];
+        }
 
+        // Increment the vote count for the selected option
+        poll.votes[selectedOption]!.add(optionIndex);
+
+        // Update user vote
+        poll.userVotes[userId] = optionIndex;
+
+        // Update the message in Firestore
         await messageRef.update({
           'poll.votes': poll.votes,
           'poll.userVotes': poll.userVotes,
@@ -271,6 +282,7 @@ class MessageWidget extends StatelessWidget {
       }
     }
   }
+
 
 }
 
