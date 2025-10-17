@@ -123,7 +123,7 @@ class MessageWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: senderId == _auth.currentUser?.uid
                         ? Colors.purple[300]
-                        : Colors.grey[200],
+                        : Colors.purple[300],
                     borderRadius: BorderRadius.only(
                       topLeft: const Radius.circular(12),
                       topRight: const Radius.circular(12),
@@ -282,7 +282,6 @@ class MessageWidget extends StatelessWidget {
       }
     }
   }
-
 
 }
 
